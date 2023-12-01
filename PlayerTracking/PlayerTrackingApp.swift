@@ -6,12 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct PlayerTrackingApp: App {
+    let container: ModelContainer
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PlayerListView()
+        }
+        .modelContainer(container)
+    }
+    
+    init() {
+        let schema = Schema([Player.self])
+        let config = ModelConfiguration("Players", schema: schema)
+        
+        do {
+            try container = ModelContainer(for: schema, configurations: config)
+        } catch {
+            fatalError("Could not create container")
         }
     }
 }
